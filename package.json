@@ -224,7 +224,8 @@
       "test/e2e",
       "test/types",
       "playground",
-      "packages/@okta/courage-dist"
+      "packages/@okta/courage-dist",
+      "src/v3"
     ],
     "nohoist": [
       "**/@wdio/**"
