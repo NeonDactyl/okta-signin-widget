@@ -19,7 +19,7 @@ import {
   FlowIdentifier,
   OAuthResponseType,
   OktaAuth,
-  OktaAuthOptions
+  OktaAuthOptions,
 } from '@okta/okta-auth-js';
 import {
   RawIdxResponse,

@@ -14,8 +14,8 @@
 *.iml
 *.log
 /dist
-build2
-node_modules
+build2/
+node_modules/
 package-lock.json
 packages/@okta/i18n/dist/
 packages/@okta/i18n/src/json/

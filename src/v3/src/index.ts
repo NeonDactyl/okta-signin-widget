@@ -19,11 +19,12 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
     .then(({ getWorker }) => getWorker())
     .then((worker) => worker?.start());
 
-    import('../../../.widgetrc')
-      // @ts-ignore config fails typecheck
-      // eslint-disable-next-line no-new
-      .then((config) => new OktaSignIn({ el: '#signin-container', ...config }))
-      .catch((error) => console.error(error));
+  import('../../../.widgetrc')
+    .then((config) => new OktaSignIn({
+      el: '#signin-container',
+      ...config,
+    }))
+    .catch((error) => console.error(error));
 }
 
 if (typeof window !== 'undefined') {

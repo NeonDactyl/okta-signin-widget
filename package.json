@@ -58,7 +58,7 @@
     "test:tsd:ci": "yarn codegen && yarn test:tsd",
     "build:esm": "yarn clean:esm && yarn build:rollup-release && yarn lint:esm",
     "build:dev": "grunt build:dev",
-    "build:release": "grunt build:release && yarn workspace v3 build",
+    "build:release": "grunt build:release && yarn build:v3",
     "build:rollup-dev": "rollup -c",
     "build:rollup-release": "rollup -c rollup.release.config.js",
     "build:webpack-dev": "webpack --config webpack.dev.config.js",
@@ -73,7 +73,12 @@
     "clean:types": "grunt clean:types",
     "generate:types": "ttsc --noEmit false --declaration --emitDeclarationOnly --declarationMap",
     "copy:types": "grunt copy:types",
-    "build:types": "yarn clean:types && yarn generate:types && yarn copy:types"
+    "build:types": "yarn clean:types && yarn generate:types && yarn copy:types",
+    "dev:v3": "yarn workspace v3 dev",
+    "build:v3": "yarn workspace v3 build",
+    "test-unit:v3": "yarn workspace v3 test",
+    "test-e2e:v3": "yarn workspace v3 test:e2e",
+    "lint:v3": "yarn workspace v3 lint"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.6",
