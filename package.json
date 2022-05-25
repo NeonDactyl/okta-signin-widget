@@ -67,7 +67,8 @@
     "clean:types": "grunt clean:types",
     "generate:types": "ttsc --noEmit false --declaration --emitDeclarationOnly --declarationMap",
     "copy:types": "grunt copy:types",
-    "build:types": "yarn clean:types && yarn generate:types && yarn copy:types"
+    "build:types": "yarn clean:types && yarn generate:types && yarn copy:types",
+    "start:mock-server": "MOCK_SERVER_PORT=3030 nodemon --delay 100 -e js,json --watch playground/mocks --exec 'node playground/mocks/server.js'"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.6",
@@ -188,7 +189,7 @@
     "webpack-dev-server": "^4.8.1"
   },
   "dependencies": {
-    "@okta/okta-auth-js": "6.5.1",
+    "@okta/okta-auth-js": "^6.5.1",
     "@sindresorhus/to-milliseconds": "^1.0.0",
     "@types/backbone": "^1.4.15",
     "clipboard": "^1.5.16",
