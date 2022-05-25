@@ -13,23 +13,38 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import buffer from 'buffer';
 import { resolve } from 'path';
+import { existsSync, copyFileSync } from 'fs';
 
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import envVars from 'preact-cli-plugin-env-vars';
 import { DefinePlugin } from 'webpack';
 
+const PROJECT_ROOT = resolve(__dirname, '../../');
+const TARGET = resolve(PROJECT_ROOT, 'target');
+const PLAYGROUND = resolve(PROJECT_ROOT, 'playground');
+const DEV_SERVER_PORT = 3000;
+const MOCK_SERVER_PORT = 3030;
+const WIDGET_RC_JS = resolve(PROJECT_ROOT, '.widgetrc.js');
+const WIDGET_RC = resolve(PROJECT_ROOT, '.widgetrc');
+
+// run `OKTA_SIW_HOST=0.0.0.0 yarn start --watch` to override the host
+const HOST = process.env.OKTA_SIW_HOST || 'localhost';
+
+if (!existsSync(WIDGET_RC_JS) && existsSync(WIDGET_RC)) {
+  console.error('============================================');
+  console.error(`Please migrate the ${WIDGET_RC} to ${WIDGET_RC_JS}.`);
+  /* eslint-disable-next-line @okta/okta/no-exclusive-language */
+  console.error('For more information, please see https://github.com/okta/okta-signin-widget/blob/master/MIGRATING.md');
+  console.error('============================================');
+  process.exit(1);
+}
+
+if (!existsSync(WIDGET_RC_JS)) {
+  // create default WIDGET_RC if it doesn't exist to simplifed the build process
+  copyFileSync('.widgetrc.sample.js', WIDGET_RC_JS);
+}
+
 export default {
-  /**
-   * Function that mutates the original webpack config. Supports asynchronous
-   * changes when a promise is returned (or it's an async function).
-   *
-   * @param {object} config - original webpack config.
-   * @param {object} env - options passed to the CLI.
-   * @param {WebpackConfigHelpers} helpers - object with useful helpers for
-   * working with the webpack config.
-   * @param {object} options - this is mainly relevant for plugins (will always
-   * be empty in the config), default to an empty object
-   */
   webpack(config, env, helpers) {
     /* eslint-disable no-param-reassign */
     config.output.libraryTarget = 'umd';
@@ -122,6 +137,34 @@ export default {
         Buffer: buffer,
       }),
     );
+
+    config.devServer = {
+      host: HOST,
+      static: [PLAYGROUND, TARGET, {
+        staticOptions: {
+          watchContentBase: true
+        }
+      }],
+      historyApiFallback: true,
+      // FIXME CSP prevents scripts from loading in dev mode
+      // headers: { 'Content-Security-Policy': `script-src http://${HOST}:${DEV_SERVER_PORT}` },
+      compress: true,
+      port: DEV_SERVER_PORT,
+      proxy: [{
+        context: [
+          '/oauth2/',
+          '/api/v1/',
+          '/idp/idx/',
+          '/login/getimage',
+          '/sso/idps/',
+          '/app/UserHome',
+          '/oauth2/v1/authorize',
+          '/auth/services/',
+          '/.well-known/webfinger'
+        ],
+        target: `http://${HOST}:${MOCK_SERVER_PORT}`
+      }],
+    },
 
     // preact-cli-plugin-env-vars
     envVars(config, env, helpers);

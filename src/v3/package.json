@@ -40,7 +40,7 @@
     "prelint": "yarn build:i18n",
     "lint": "eslint .",
     "lint:report": "scripts/buildtools/lint-report.sh",
-    "preview": "sirv build/dist --port 8080",
+    "preview": "sirv build/dist --port 3000",
     "pretest": "yarn build:i18n",
     "test": "PREACT_APP_USE_PKCE=false NODE_ENV=test jest",
     "test:e2e": "NODE_ENV=test testcafe --config-file test/e2e/.testcaferc.json test/e2e/tests/**/*.ts",

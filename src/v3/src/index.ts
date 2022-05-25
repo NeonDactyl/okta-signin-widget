@@ -19,12 +19,16 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
     .then(({ getWorker }) => getWorker())
     .then((worker) => worker?.start());
 
-  import('../../../.widgetrc')
-    .then((config) => new OktaSignIn({
-      el: '#signin-container',
-      ...config,
-    }))
-    .catch((error) => console.error(error));
+  if (process.env.NODE_ENV === 'development') {
+    import('../../../.widgetrc')
+      .then((config) => {
+        new OktaSignIn({
+          el: '#signin-container',
+          ...config,
+        });
+      })
+      .catch((error) => console.error(error));
+  }
 }
 
 if (typeof window !== 'undefined') {
