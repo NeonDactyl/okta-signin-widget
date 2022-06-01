@@ -22,6 +22,8 @@ exports.handler = async () => {
     'src'
   ], `${BUILD_DIR}`);
 
+  shell.rm('-rf', [`${BUILD_DIR}/src/v3/node_modules`]); // FIXME
+
   shell.echo('Modifying final package.json');
   let packageJSON = JSON.parse(fs.readFileSync(`${BUILD_DIR}/package.json`));
   packageJSON.private = false;
