@@ -56,7 +56,7 @@
     "@jsonforms/vanilla-renderers": "^2.5.2",
     "@okta/odyssey-design-tokens": "0.9.x",
     "@okta/odyssey-react": "0.9.x",
-    "@okta/okta-auth-js": "6.4.3",
+    "@okta/okta-auth-js": "^6.6.0",
     "ajv": "6.12.6",
     "ajv-errors": "1.0.1",
     "babel-jest": "^27.3.1",

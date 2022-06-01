@@ -189,7 +189,7 @@
     "webpack-dev-server": "^4.8.1"
   },
   "dependencies": {
-    "@okta/okta-auth-js": "^6.5.1",
+    "@okta/okta-auth-js": "^6.6.0",
     "@sindresorhus/to-milliseconds": "^1.0.0",
     "@types/backbone": "^1.4.15",
     "clipboard": "^1.5.16",
