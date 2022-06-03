@@ -12,7 +12,7 @@
 
 /* eslint-disable import/no-extraneous-dependencies */
 import buffer from 'buffer';
-import { resolve } from 'path';
+import { resolve, join } from 'path';
 import { existsSync, copyFileSync } from 'fs';
 
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
@@ -114,14 +114,22 @@ export default {
     });
 
     // Use any `index` file, not just index.js
-    config.resolve.alias['preact-cli-entrypoint'] = resolve(
-      process.cwd(),
+    config.resolve.alias['preact-cli-entrypoint'] = join(
+      __dirname,
       'src',
       'index',
     );
-    config.resolve.alias['@okta/okta-auth-js'] = resolve(
-      process.cwd(),
-      'node_modules/@okta/okta-auth-js/dist/okta-auth-js.umd.js',
+
+    // try both workspace-level and root-level for @okta/okta-auth-js dep
+    config.resolve.alias['@okta/okta-auth-js'] = join(
+      __dirname,
+      '..',
+      '..',
+      'node_modules',
+      '@okta',
+      'okta-auth-js',
+      'dist',
+      'okta-auth-js.umd.js',
     );
 
     if (env.production) {

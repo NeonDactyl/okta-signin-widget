@@ -30,7 +30,7 @@ const shouldRenderAuthCoin = (props?: AuthCoinProps): boolean => {
     return false;
   }
 
-  if (!authCoinConfig.icon && !props.url) {
+  if (!authCoinConfig.icon && !props?.url) {
     return false;
   }
 
