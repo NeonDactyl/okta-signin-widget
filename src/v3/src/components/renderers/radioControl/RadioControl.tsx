@@ -14,7 +14,11 @@ import { Box, Radio } from '@okta/odyssey-react';
 import { FunctionComponent, h } from 'preact';
 import { useEffect } from 'preact/hooks';
 import { useTranslation } from 'react-i18next';
-import { ChangeEvent, Choice, ControlPropsWithFormValidationState } from 'src/types';
+import {
+  ChangeEvent,
+  Choice,
+  ControlPropsWithFormValidationState
+} from '../../../types';
 
 import { handleFormFieldBlur, handleFormFieldChange } from '../../../util';
 import { getLabelName } from '../helpers';
@@ -45,11 +49,8 @@ const RadioControl: FunctionComponent<ControlPropsWithFormValidationState> = ({
   }, []);
 
   return visible ? (
-    // @ts-ignore OKTA-471233
-    <Box
-      // TODO: remove this condition once this ticket is implemented in Odyssey OKTA-473829
-      marginBottom={(dirty && errors) ? undefined : 'm'}
-    >
+    // @ts-ignore OKTA-471233, OKTA-473829
+    <Box marginBottom={(dirty && errors) ? undefined : 'm'}>
       <Radio.Group
         error={dirty && errors}
         name={path}
@@ -62,19 +63,19 @@ const RadioControl: FunctionComponent<ControlPropsWithFormValidationState> = ({
           e.preventDefault();
           handleFormFieldBlur(setPristine, setTouched, setUntouched);
         }}
-        // @ts-ignore expecting a type of:
-        // (event?: TargetedEvent<HTMLInputElement, Event> | undefined, value?: string | undefined) => void
-        onChange={(e: ChangeEvent<HTMLInputElement>) => {
-          e?.preventDefault();
-          handleFormFieldChange(
-            path,
-            e?.target.value,
-            handleChange,
-            setPristine,
-            setUntouched,
-            setTouched,
-            setDirty,
-          );
+        onChange={(event) => {
+          if (event) {
+            event.preventDefault();
+            handleFormFieldChange(
+              path,
+              event.currentTarget.value,
+              handleChange,
+              setPristine,
+              setUntouched,
+              setTouched,
+              setDirty,
+            );
+          }
         }}
       >
         {
