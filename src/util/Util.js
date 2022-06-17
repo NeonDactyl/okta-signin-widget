@@ -16,8 +16,11 @@ import { _, loc } from 'okta';
 import Enums from './Enums';
 import Logger from './Logger';
 import BrowserFeatures from './BrowserFeatures';
+import CourageUtil from '../../packages/@okta/courage-dist/esm/src/courage/util/Util';
 
 const Util = {};
+
+const getUrlQueryString  = CourageUtil.getUrlQueryString;
 
 const buildInputForParameter = function(name, value) {
   const input = document.createElement('input');
@@ -242,5 +245,7 @@ Util.createInputExplain = function(explainKey, labelKey, bundleName, explainPara
 Util.isV1StateToken = function(token) {
   return !!(token && _.isString(token) && token.startsWith('00'));
 };
+
+Util.getUrlQueryString = getUrlQueryString;
 
 export default Util;

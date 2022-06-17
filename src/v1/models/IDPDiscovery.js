@@ -29,7 +29,18 @@ export default PrimaryAuthModel.extend({
 
   local: {},
 
+  buildRedirectUrlQueryParams: function(url) {
+    if (this.settings.get('features.idpDiscoveryIncludeQueryParams'))
+    {
+      var queryParams = {fromURI: url};
+      queryParams['login_hint'] = this.settings.transformUsername(this.get('username'), Enums.IDP_DISCOVERY);
+      return Util.getUrlQueryString(queryParams);
+    }
+    return '';
+  },
+
   save: function() {
+    console.log(this.settings.get('features.idpDiscoveryIncludeQueryParams'));
     const username = this.settings.transformUsername(this.get('username'), Enums.IDP_DISCOVERY);
     const remember = this.get('remember');
     const lastUsername = this.get('lastUsername');
@@ -63,11 +74,12 @@ export default PrimaryAuthModel.extend({
             //override redirectFn to only use Util.redirectWithFormGet if OKTA_INVALID_SESSION_REPOST is included
             //it will be encoded since it will be included in the encoded fromURI
 
-            redirectFn(res.links[0].href);
+            redirectFn(res.links[0].href + this.buildRedirectUrlQueryParams(requestContext));
           }
         }
       })
-      .catch(() => {
+      .catch((error) => {
+        console.log(error);
         this.trigger('error');
         // Specific event handled by the Header for the case where the security image is not
         // enabled and we want to show a spinner. (Triggered only here and handled only by Header).

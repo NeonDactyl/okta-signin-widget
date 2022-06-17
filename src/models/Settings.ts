@@ -94,6 +94,7 @@ const local: Record<string, ModelProperty> = {
   'features.customExpiredPassword': ['boolean', true, false],
   'features.registration': ['boolean', false, false],
   'features.idpDiscovery': ['boolean', false, false],
+  'features.idpDiscoveryIncludeQueryParams': ['boolean', false, false],
   'features.passwordlessAuth': ['boolean', false, false],
   'features.showPasswordToggleOnSignInPage': ['boolean', false, false],
   'features.trackTypingPattern': ['boolean', false, false],
