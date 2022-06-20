@@ -40,7 +40,6 @@ export default PrimaryAuthModel.extend({
   },
 
   save: function() {
-    console.log(this.settings.get('features.idpDiscoveryIncludeQueryParams'));
     const username = this.settings.transformUsername(this.get('username'), Enums.IDP_DISCOVERY);
     const remember = this.get('remember');
     const lastUsername = this.get('lastUsername');

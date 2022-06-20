@@ -27,6 +27,7 @@ import Errors from 'util/Errors';
 import WidgetUtil from 'util/Util';
 const SharedUtil = internal.util.Util;
 const itp = Expect.itp;
+const fitp = Expect.fitp;
 const BEACON_LOADING_CLS = 'beacon-loading';
 const OIDC_STATE = 'gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg';
 
@@ -1511,6 +1512,21 @@ Expect.describe('IDPDiscovery', function() {
         })
         .then(function() {
           expect(SharedUtil.redirect).toHaveBeenCalledWith('http://demo.okta1.com:1802/sso/saml2/0oa2hhcwIc78OGP1W0g4');
+        });
+    });
+    itp('redirects to idp for SAML idps with query parameters', function() {
+      spyOn(SharedUtil, 'redirect');
+      return setup({features: { idpDiscoveryIncludeQueryParams: true },  'idpDiscovery.requestContext': 'https://foo.com' })
+        .then(function(test) {
+          test.setNextWebfingerResponse(resSuccessSAML);
+          test.form.setUsername(' testuser@clouditude.net ');
+          test.form.submit();
+          return Expect.waitForSpyCall(SharedUtil.redirect, test);
+        })
+        .then(function() {
+          expect(SharedUtil.redirect).toHaveBeenCalledWith(
+            'http://demo.okta1.com:1802/sso/saml2/0oa2hhcwIc78OGP1W0g4?fromURI=https%3A%2F%2Ffoo.com&login_hint=testuser%40clouditude.net'
+          );
         });
     });
     itp('redirects using form Get to idp for SAML idps when features.redirectByFormSubmit is on', function() {
